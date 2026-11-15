@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wealth Identity Map · Your Wealthiest Self</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0b0c;
+    --card: #1f1a1c;
+    --card2: #262022;
+    --line: #3a3034;
+    --rose: #dca591;
+    --rose-deep: #b7795f;
+    --gold: #e9c9a8;
+    --rose-soft: rgba(220,165,145,0.12);
+    --text: #f4ece8;
+    --muted: #b9aaa4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse at top, #2c2023 0%, var(--black) 60%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.6;
+    min-height: 100vh; padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .brand { text-align: center; letter-spacing: .25em; font-size: 11px; text-transform: uppercase; color: var(--rose); margin-bottom: 8px; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; line-height: 1.15; }
+  h1 { font-size: clamp(34px, 7vw, 52px); text-align: center; margin-bottom: 8px; }
+  h1 em, h2 em { color: var(--rose); font-style: italic; }
+  h2 { font-size: clamp(28px, 5.5vw, 38px); margin-bottom: 10px; }
+  h3 { font-size: 22px; margin: 4px 0 6px; color: var(--gold); }
+  .sub { text-align: center; color: var(--muted); max-width: 540px; margin: 0 auto 26px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px 20px; }
+  @media (min-width: 600px) { .card { padding: 36px 40px; } }
+  .hidden { display: none !important; }
+  .kicker { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--rose); margin-bottom: 6px; }
+  .intro { color: var(--muted); margin-bottom: 22px; }
+  .teach { background: var(--rose-soft); border-left: 3px solid var(--rose); border-radius: 0 12px 12px 0; padding: 14px 16px; margin: 0 0 24px; font-style: italic; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; line-height: 1.45; }
+  .q { margin-bottom: 24px; }
+  .q label { display: block; font-weight: 500; margin-bottom: 4px; }
+  .q .hint { display: block; color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  textarea, input[type=text], input[type=password] {
+    width: 100%; background: var(--card2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 16px;
+  }
+  textarea { min-height: 110px; resize: vertical; }
+  textarea:focus, input:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-soft); }
+  .scale { display: flex; align-items: center; gap: 14px; }
+  .scale input[type=range] { flex: 1; accent-color: var(--rose); height: 28px; }
+  .scale .val { font-family: 'Cormorant Garamond', serif; font-size: 30px; color: var(--rose); min-width: 36px; text-align: center; }
+  .scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: -2px; }
+  .btns { display: flex; gap: 12px; justify-content: space-between; margin-top: 28px; flex-wrap: wrap; }
+  button { font: inherit; cursor: pointer; border-radius: 40px; padding: 13px 24px; font-weight: 600; font-size: 15px; border: none; }
+  .primary { background: linear-gradient(135deg, var(--gold), var(--rose) 55%, var(--rose-deep)); color: var(--black); }
+  .primary:hover { filter: brightness(1.06); }
+  .ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .ghost:hover { border-color: var(--rose); }
+  .full { width: 100%; }
+  .progress { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 0 0 8px; }
+  .progress div { height: 100%; background: linear-gradient(90deg, var(--gold), var(--rose)); width: 0; transition: width .4s; }
+  .stepcount { text-align: right; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .note { font-size: 13px; color: var(--muted); text-align: center; margin-top: 18px; }
+  .err { color: #f0a0a0; font-size: 14px; margin-top: 10px; min-height: 20px; }
+  .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 18px; }
+  .tabs button { padding: 9px 18px; font-size: 14px; background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .tabs button.on { color: var(--black); background: var(--rose); border-color: var(--rose); }
+  .trio { display: grid; gap: 10px; }
+  .numbered { display: flex; gap: 10px; align-items: center; }
+  .numbered span { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--rose); width: 22px; }
+  .flash { color: var(--gold); font-size: 14px; margin-top: 8px; min-height: 20px; }
+  .steps-list { list-style: none; margin: 18px 0 6px; }
+  .steps-list li { padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
+  .steps-list li b { color: var(--rose); font-family: 'Cormorant Garamond', serif; font-size: 20px; min-width: 22px; }
+  .map-section { margin-bottom: 26px; }
+  .map-section h3 { border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 10px; }
+  .map-item { margin-bottom: 12px; }
+  .map-item .mq { font-size: 13px; color: var(--muted); }
+  .map-item .ma { white-space: pre-wrap; }
+  .iam { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 5vw, 34px); font-style: italic; color: var(--gold); margin: 8px 0 26px; }
+  .day { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; background: var(--card2); }
+  .day.today { border-color: var(--rose); }
+  .day .dh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .day .dh b { font-family: 'Cormorant Garamond', serif; font-size: 21px; color: var(--rose); }
+  .day .dh small { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; }
+  .day .dp { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+  .day textarea { min-height: 70px; }
+  footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 30px; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Senga Cree · Your Wealthiest Self</div>
+  <h1>The Wealth <em>Identity</em> Map</h1>
+  <p class="sub">You don't receive reality. You project it. This map shows you what you're projecting about wealth, so you can choose again.</p>
+
+  <!-- Login -->
+  <div id="login" class="card">
+    <div class="kicker">Welcome</div>
+    <h2>Enter your access code</h2>
+    <p class="intro">You'll find your code in the Your Wealthiest Self Facebook group or your welcome email.</p>
+    <input type="password" id="code" placeholder="Access code" autocomplete="off">
+    <div class="err" id="codeErr"></div>
+    <button class="primary full" onclick="checkCode()">Open my Map</button>
+  </div>
+
+  <div id="app" class="hidden">
+    <div class="tabs hidden" id="tabs">
+      <button id="tabMap" class="on" onclick="showTab('map')">My Map</button>
+      <button id="tabJournal" onclick="showTab('journal')">Evidence Journal</button>
+    </div>
+    <div class="progress" id="progWrap"><div id="prog"></div></div>
+    <div class="stepcount" id="stepcount"></div>
+    <div class="card" id="screen"></div>
+    <p class="note">Your answers save privately in this browser only. Nothing is sent anywhere, and Senga never sees them.</p>
+  </div>
+
+  <footer>
+    © Senga Cree · Exponential Psychology<br>
+    <a href="#" onclick="clearAll();return false;">Clear my answers</a>
+  </footer>
+</div>
+
+<script>
+const ACCESS_CODE = "wealthiest2026";
+const STORE_KEY = "yws_wealth_map_v1";
+
+const STEPS = [
+  {
+    id: "now", kicker: "Step 1 · Awareness", title: "Your wealth <em>now</em>",
+    teach: "Before we change anything, we see it. No judgement. Just honest noticing.",
+    qs: [
+      { id: "now_define", label: "In your own words, what is wealth to you right now?", hint: "Write the definition you actually live by, not the one you think you should have." },
+      { id: "now_where", label: "Where are you with wealth today?", hint: "An honest snapshot in words. No numbers needed." },
+      { id: "now_feel", type: "scale", label: "How wealthy do you feel right now?", lo: "Not at all", hi: "Completely" },
+      { id: "now_happen", label: "Does wealth feel like something that happens to you, or something you are?", hint: "Notice which answer comes first, and what that tells you." }
+    ]
+  },
+  {
+    id: "iam", kicker: "Step 2 · Awareness", title: "Your <em>“I am”</em> statements",
+    teach: "“I am” is the most powerful sentence you'll ever say. Whatever follows it becomes an instruction to your identity.",
+    qs: [
+      { id: "iam_list", label: "Write down every “I am…” sentence you say about money.", hint: "Out loud or in your head. For example: “I am rubbish with money”, “I am always catching up”, “I am not a numbers person”." },
+      { id: "iam_loudest", label: "Which one is the loudest? What is it creating in your life right now?", hint: "Look at your current situation through the lens of this one sentence." },
+      { id: "iam_voice", label: "Whose voice does it sound like?", hint: "A parent, a teacher, a past version of you, the culture you grew up in…" }
+    ]
+  },
+  {
+    id: "lens", kicker: "Step 3 · New ways of seeing", title: "The projection <em>lens</em>",
+    teach: "We're not receiving reality, we're projecting it. What you believe about yourself, about the world and about what's available to someone like you becomes your self-concept. Your identity is assembled from it, and this is how wealth responds to you.",
+    qs: [
+      { id: "lens_self", label: "What do I believe about myself around money and wealth?" },
+      { id: "lens_world", label: "What do I believe about the world? Is there enough?" },
+      { id: "lens_available", label: "What do I believe is available to someone like me?", hint: "Someone with my background, my age, my business, my history…" },
+      { id: "lens_respond", label: "Looking at those three answers, how is wealth currently responding to you?" }
+    ]
+  },
+  {
+    id: "infused", kicker: "Step 4 · New ways of seeing", title: "Infused with <em>wealth</em>",
+    teach: "Wealth isn't out there waiting to happen to you. It's a state you can live from, right now, in this present moment.",
+    qs: [
+      { id: "inf_world", type: "scale", label: "How infused with wealth does the world feel to you?", lo: "Scarce", hi: "Overflowing" },
+      { id: "inf_me", type: "scale", label: "How infused with wealth do you feel?", lo: "Empty", hi: "Overflowing" },
+      { id: "inf_gap", label: "What do you notice about the difference between those two numbers?" },
+      { id: "inf_react", label: "Where do you react when money comes up?", hint: "The automatic “I can't”, “not yet”, “not for me”, “how much?!”" },
+      { id: "inf_ican", label: "Describe a moment you felt an inner “I can”. What was different?" },
+      { id: "inf_portals", label: "Look around your life right now. What portals to co-create wealth are already in front of you?", hint: "People, ideas, offers, conversations, gifts, skills you're not using…" }
+    ]
+  },
+  {
+    id: "roots", kicker: "Step 5 · Awareness", title: "Inherited beliefs & <em>money language</em>",
+    teach: "Most of what we believe about money was handed to us before we could choose. Seeing it is the beginning of choosing again.",
+    qs: [
+      { id: "roots_rules", label: "What were the money rules in your family growing up?", hint: "The spoken ones and the unspoken ones." },
+      { id: "roots_memory", label: "What's your earliest money memory? What did you decide about money because of it?" },
+      { id: "roots_rich", label: "What do you say or think about wealthy people?" },
+      { id: "roots_receive", label: "What do you say or feel when someone pays you, gifts you or compliments you?" },
+      { id: "roots_worth", label: "Money & self-worth: do you feel you deserve to be wealthy?", hint: "When does your sense of worth rise or fall with money?" }
+    ]
+  },
+  {
+    id: "self", kicker: "Step 6 · New ways of being", title: "Your Wealthiest Self & <em>the gap</em>",
+    teach: "Now step into the version of you who already lives as wealth. Not someday. As an identity you can try on today.",
+    qs: [
+      { id: "self_who", label: "Who is your Wealthiest Self?", hint: "How do they speak, decide, spend, receive and rest?" },
+      { id: "self_tuesday", label: "What does an ordinary Tuesday look like for them?" },
+      { id: "self_iam", label: "What is their “I am” statement about wealth?" },
+      { id: "self_true", label: "What would have to be true for this version of you to feel normal?" },
+      { id: "self_comes", label: "What comes up as you imagine being them?", hint: "Fear, guilt, excitement, “who do I think I am”…" }
+    ]
+  }
+];
+
+const INTEGRATE = [
+  { id: "int_surprise", label: "What surprised you in your analysis?" },
+  { id: "int_potent", label: "Which insight feels most potent?" },
+  { id: "int_resist", label: "What resistance are you noticing?" },
+  { id: "int_ins", type: "trio", label: "Your 3 key insights" },
+  { id: "int_iam", type: "line", label: "Your “I am” statement for the next 11 days", hint: "Present tense, short and true for your Wealthiest Self. For example: “I am wealth in motion.”" },
+  { id: "int_action", label: "One aligned action you'll take from this identity" }
+];
+
+const JOURNAL_PROMPTS = [
+  { days: [1,2,3,4], phase: "Seeing", prompt: "Where did I notice wealth around me today?" },
+  { days: [5,6,7,8], phase: "Being", prompt: "Where did I act as wealth today?" },
+  { days: [9,10,11], phase: "Creating", prompt: "What did I co-create today, and what did I receive?" }
+];
+
+const ANALYSIS_PROMPT = `You are a warm, insightful wealth identity guide supporting someone on Senga Cree's 11-day programme "Your Wealthiest Self". The programme teaches that we don't receive reality, we project it: what we believe about ourselves, about the world and about what is available to "someone like me" forms our self-concept, our identity is assembled from that, and wealth responds to that identity. Wealth is treated as a state and an identity ("I am wealth"), not a destination or something that happens to us.
+
+Read their answers below and write a personal Wealth Identity Map analysis. Use UK English, speak directly to them as "you", and be compassionate, specific and quote their own words back to them where it helps. Do not give financial, investment or medical advice.
+
+Structure your reply with these headings:
+
+1. Your current definition of wealth — what it reveals.
+2. Your self-concept — what you are projecting. Summarise what they believe about themselves, the world, and what is available to someone like them, and how wealth is responding to that.
+3. Your "I am" language — list their limiting "I am" statements and offer a present-tense reframe for each.
+4. React or "I can" — the patterns in where they react, and what their "I can" moments show is already possible.
+5. Inherited beliefs — the key rules and decisions they took on, and which ones they can now choose to release.
+6. Expansive beliefs already present — the evidence of wealth and expansion that is already in their answers.
+7. Portals in front of you — the openings to co-create wealth in the present moment that they named or hinted at.
+8. The gap — between their current identity and their Wealthiest Self, and what makes the gap smaller.
+9. One identity shift to carry through the 11 days, with one "I am" statement for it.
+
+Finish with a short message written from their Wealthiest Self to them now.
+
+Here are their answers:
+`;
+
+let data = { answers: {}, analysis: "", journal: {}, stage: "welcome", step: 0, started: "" };
+let tab = "map";
+
+function load() { try { const s = localStorage.getItem(STORE_KEY); if (s) data = Object.assign(data, JSON.parse(s)); } catch (e) {} }
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) {} }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function $(id) { return document.getElementById(id); }
+
+function checkCode() {
+  if ($("code").value.trim().toLowerCase() === ACCESS_CODE.toLowerCase()) {
+    try { sessionStorage.setItem(STORE_KEY + "_ok", "1"); } catch (e) {}
+    showApp();
+  } else { $("codeErr").textContent = "That code doesn't match. Please check and try again."; }
+}
+$("code").addEventListener("keydown", e => { if (e.key === "Enter") checkCode(); });
+
+function showApp() { $("login").classList.add("hidden"); $("app").classList.remove("hidden"); load(); render(); }
+
+function showTab(t) { tab = t; $("tabMap").classList.toggle("on", t === "map"); $("tabJournal").classList.toggle("on", t === "journal"); render(); }
+
+function qHTML(q) {
+  const v = data.answers[q.id];
+  let h = `<div class="q"><label>${q.label}</label>${q.hint ? `<span class="hint">${q.hint}</span>` : ""}`;
+  if (q.type === "scale") {
+    const val = v || 5;
+    h += `<div class="scale"><input type="range" min="1" max="10" value="${val}" data-id="${q.id}" oninput="setVal(this);this.nextElementSibling.textContent=this.value"><span class="val">${val}</span></div><div class="scale-ends"><span>${q.lo}</span><span>${q.hi}</span></div>`;
+    if (!v) data.answers[q.id] = val;
+  } else if (q.type === "trio") {
+    const arr = Array.isArray(v) ? v : ["", "", ""];
+    h += `<div class="trio">` + [0,1,2].map(i => `<div class="numbered"><span>${i+1}</span><input type="text" value="${esc(arr[i])}" data-id="${q.id}" data-i="${i}" oninput="setTrio(this)"></div>`).join("") + `</div>`;
+  } else if (q.type === "line") {
+    h += `<input type="text" value="${esc(v)}" data-id="${q.id}" oninput="setVal(this)">`;
+  } else {
+    h += `<textarea data-id="${q.id}" oninput="setVal(this)">${esc(v)}</textarea>`;
+  }
+  return h + `</div>`;
+}
+function setVal(el) { data.answers[el.dataset.id] = el.value; save(); }
+function setTrio(el) { const id = el.dataset.id; const a = Array.isArray(data.answers[id]) ? data.answers[id] : ["", "", ""]; a[+el.dataset.i] = el.value; data.answers[id] = a; save(); }
+
+function go(stage, step) { data.stage = stage; if (step != null) data.step = step; save(); render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+function render() {
+  const s = $("screen");
+  const done = data.stage === "map";
+  $("tabs").classList.toggle("hidden", !done);
+  const total = STEPS.length + 2;
+  let pos = 0;
+  if (data.stage === "steps") pos = data.step + 1;
+  else if (data.stage === "analysis") pos = STEPS.length + 1;
+  else if (data.stage === "integrate") pos = STEPS.length + 2;
+  const showProg = ["steps", "analysis", "integrate"].includes(data.stage);
+  $("progWrap").classList.toggle("hidden", !showProg);
+  $("stepcount").classList.toggle("hidden", !showProg);
+  $("prog").style.width = (pos / total * 100) + "%";
+  $("stepcount").textContent = showProg ? `${pos} of ${total}` : "";
+
+  if (done && tab === "journal") { s.innerHTML = journalHTML(); return; }
+
+  if (data.stage === "welcome") {
+    s.innerHTML = `<div class="kicker">Day 1 · Your Wealthiest Self</div>
+      <h2>Begin with <em>awareness</em></h2>
+      <p class="intro">This map takes around 30–40 minutes. Find a quiet moment and answer honestly. There are no right answers, only true ones. You can leave and come back at any time; your answers are saved on this device.</p>
+      <ul class="steps-list">${STEPS.map((st, i) => `<li><b>${i+1}</b><span>${st.title.replace(/<\/?em>/g, "")}</span></li>`).join("")}
+      <li><b>7</b><span>Your analysis & integration</span></li></ul>
+      <p class="intro" style="margin-top:14px">Then you'll keep an <b>Evidence Journal</b> through the 11 days, and come back to your map on Day 11 to see how far you've moved.</p>
+      <div class="btns"><span></span><button class="primary" onclick="startMap()">${Object.keys(data.answers).length ? "Continue my Map" : "Begin my Map"} →</button></div>`;
+  } else if (data.stage === "steps") {
+    const st = STEPS[data.step];
+    s.innerHTML = `<div class="kicker">${st.kicker}</div><h2>${st.title}</h2><div class="teach">${st.teach}</div>${st.qs.map(qHTML).join("")}
+      <div class="btns"><button class="ghost" onclick="back()">← Back</button><button class="primary" onclick="next()">${data.step === STEPS.length - 1 ? "Reveal my patterns" : "Next"} →</button></div>`;
+  } else if (data.stage === "analysis") {
+    s.innerHTML = `<div class="kicker">Your analysis</div><h2>Reveal your <em>patterns</em></h2>
+      <p class="intro">Your answers and Senga's analysis prompt are ready to copy together in one go.</p>
+      <ol style="margin:0 0 18px 20px;color:var(--muted)">
+        <li>Tap <b>Copy everything</b>.</li>
+        <li>Open Claude, ChatGPT or your usual AI, and paste it into a new chat.</li>
+        <li>Copy the reply and paste it into the box below.</li>
+      </ol>
+      <button class="primary full" onclick="copyAll()">Copy everything</button>
+      <div class="flash" id="flash"></div>
+      <div class="q" style="margin-top:18px"><label>Paste your analysis here</label><textarea data-id="__analysis" style="min-height:200px" oninput="data.analysis=this.value;save()">${esc(data.analysis)}</textarea></div>
+      <div class="btns"><button class="ghost" onclick="go('steps', STEPS.length-1)">← Back</button><button class="primary" onclick="toIntegrate()">Integrate my insights →</button></div>`;
+  } else if (data.stage === "integrate") {
+    s.innerHTML = `<div class="kicker">Step 7 · Integration</div><h2>Let it <em>land</em></h2>
+      <div class="teach">Insight changes nothing until it becomes identity. Take a breath, read your analysis again, and choose what you'll carry forward.</div>
+      ${INTEGRATE.map(qHTML).join("")}
+      <div class="btns"><button class="ghost" onclick="go('analysis')">← Back</button><button class="primary" onclick="finish()">Complete my Map →</button></div>`;
+  } else if (data.stage === "map") {
+    s.innerHTML = mapHTML();
+  }
+}
+
+function startMap() { if (!data.started) data.started = new Date().toISOString(); go("steps", Math.min(data.step || 0, STEPS.length - 1)); }
+function next() { if (data.step < STEPS.length - 1) go("steps", data.step + 1); else go("analysis"); }
+function back() { if (data.step > 0) go("steps", data.step - 1); else go("welcome"); }
+function toIntegrate() {
+  if (!data.analysis.trim() && !confirm("You haven't pasted your analysis yet. Continue anyway?")) return;
+  go("integrate");
+}
+function finish() { tab = "map"; go("map"); }
+
+function fmt(q) {
+  const v = data.answers[q.id];
+  if (q.type === "scale") return v ? v + " / 10" : "";
+  if (q.type === "trio") return Array.isArray(v) ? v.filter(x => x && x.trim()).map((x, i) => `${i+1}. ${x}`).join("\n") : "";
+  return v || "";
+}
+
+function answersText() {
+  let t = "";
+  STEPS.forEach(st => {
+    t += `\n## ${st.title.replace(/<\/?em>/g, "")}\n`;
+    st.qs.forEach(q => { t += `\nQ: ${q.label}\nA: ${fmt(q) || "(left blank)"}\n`; });
+  });
+  return t;
+}
+
+function copyAll() {
+  const text = ANALYSIS_PROMPT + answersText();
+  let done = false;
+  const ok = () => { done = true; $("flash").textContent = "Copied. Now paste it into a new AI chat."; };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(ok, () => { if (!done) fallbackCopy(text, ok); });
+    setTimeout(() => { if (!done) fallbackCopy(text, ok); }, 1500);
+  } else fallbackCopy(text, ok);
+}
+function fallbackCopy(text, ok) {
+  const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand("copy"); ok(); } catch (e) { $("flash").textContent = "Couldn't copy automatically. Please try again."; }
+  ta.remove();
+}
+
+function mapBody(forDownload) {
+  const iam = data.answers.int_iam;
+  let h = "";
+  if (iam) h += `<div class="iam">${esc(iam)}</div>`;
+  const ins = fmt(INTEGRATE[3]);
+  if (ins || data.answers.int_action) {
+    h += `<div class="map-section"><h3>What I'm carrying forward</h3>`;
+    if (ins) h += `<div class="map-item"><div class="mq">My 3 key insights</div><div class="ma">${esc(ins)}</div></div>`;
+    if (data.answers.int_action) h += `<div class="map-item"><div class="mq">My aligned action</div><div class="ma">${esc(data.answers.int_action)}</div></div>`;
+    h += `</div>`;
+  }
+  if (data.analysis.trim()) h += `<div class="map-section"><h3>My analysis</h3><div class="ma">${esc(data.analysis)}</div></div>`;
+  h += `<div class="map-section"><h3>My integration</h3>` + INTEGRATE.slice(0, 3).map(q => `<div class="map-item"><div class="mq">${q.label}</div><div class="ma">${esc(fmt(q)) || "—"}</div></div>`).join("") + `</div>`;
+  STEPS.forEach(st => {
+    h += `<div class="map-section"><h3>${st.title.replace(/<\/?em>/g, "")}</h3>` + st.qs.map(q => `<div class="map-item"><div class="mq">${q.label}</div><div class="ma">${esc(fmt(q)) || "—"}</div></div>`).join("") + `</div>`;
+  });
+  if (forDownload) {
+    const entries = journalEntries();
+    if (entries.length) h += `<div class="map-section"><h3>My Evidence Journal</h3>` + entries.map(e => `<div class="map-item"><div class="mq">Day ${e.day} · ${e.prompt}</div><div class="ma">${esc(e.text)}</div></div>`).join("") + `</div>`;
+  }
+  return h;
+}
+
+function mapHTML() {
+  return `<div class="kicker">Your Wealth Identity Map</div><h2>This is what you're <em>projecting</em></h2>
+    <p class="intro">Come back to this on Day 11 and notice what's already shifted.</p>
+    ${mapBody(false)}
+    <div class="btns"><button class="ghost" onclick="go('integrate')">← Edit</button><button class="primary" onclick="download()">Download my Map</button></div>`;
+}
+
+function promptFor(day) { return JOURNAL_PROMPTS.find(p => p.days.includes(day)); }
+function journalEntries() {
+  const out = [];
+  for (let d = 1; d <= 11; d++) { const t = data.journal[d]; if (t && t.trim()) out.push({ day: d, prompt: promptFor(d).prompt, text: t }); }
+  return out;
+}
+function currentDay() {
+  if (!data.started) return 1;
+  const diff = Math.floor((new Date().setHours(0,0,0,0) - new Date(data.started).setHours(0,0,0,0)) / 86400000);
+  return Math.max(1, Math.min(11, diff + 1));
+}
+function journalHTML() {
+  const today = currentDay();
+  let h = `<div class="kicker">Evidence Journal</div><h2>Collect the <em>evidence</em></h2>
+    <p class="intro">Each day, write one or two lines of evidence that your wealth identity is shifting. Small things count. Your mind believes what you give it proof of.</p>`;
+  for (let d = 1; d <= 11; d++) {
+    const p = promptFor(d);
+    h += `<div class="day${d === today ? " today" : ""}"><div class="dh"><b>Day ${d}</b><small>${p.phase}${d === today ? " · today" : ""}</small></div><div class="dp">${p.prompt}</div><textarea oninput="data.journal[${d}]=this.value;save()">${esc(data.journal[d])}</textarea></div>`;
+  }
+  return h + `<div class="btns"><span></span><button class="primary" onclick="download()">Download my Map & Journal</button></div>`;
+}
+
+function download() {
+  const css = document.querySelector("style").textContent;
+  const date = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Wealth Identity Map</title><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><style>${css}</style></head><body><div class="wrap"><div class="brand">Senga Cree · Your Wealthiest Self</div><h1>My Wealth <em>Identity</em> Map</h1><p class="sub">${date}</p><div class="card">${mapBody(true)}</div><footer>© Senga Cree · Exponential Psychology</footer></div></body></html>`;
+  const blob = new Blob([html], { type: "text/html" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "My-Wealth-Identity-Map.html";
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+function clearAll() {
+  if (confirm("This will permanently delete your answers, analysis and journal from this device. This can't be undone.")) {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    data = { answers: {}, analysis: "", journal: {}, stage: "welcome", step: 0, started: "" }; tab = "map";
+    if (!$("app").classList.contains("hidden")) render();
+  }
+}
+
+try { if (sessionStorage.getItem(STORE_KEY + "_ok")) showApp(); } catch (e) {}
+</script>
+</body>
+</html>
